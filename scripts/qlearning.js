@@ -1,6 +1,6 @@
 const learner = new QLearner(0.2, 0.8)
 const exploration = 0.05
-async function updateQlearning() {
+function updateQlearning() {
     if (player === 'O' && !gameOver) {
         let currentState = states.toString()
 
