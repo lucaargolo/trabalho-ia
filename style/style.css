@@ -52,6 +52,13 @@ body {
     flex-direction: row;
 }
 
+.board .game .mini-form {
+    background-color: #FF4F5E;
+    border: 5px solid #FF4F5E;
+    border-radius: 5px;
+    margin: 10px 0 10px 0;
+}
+
 .board .instructions {
     width: 600px;
     height: 600px;
