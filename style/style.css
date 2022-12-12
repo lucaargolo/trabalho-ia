@@ -1,0 +1,99 @@
+body {
+    background-color: #F7B2B7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.board {
+    margin: 10px;
+    background-color: #F7717D;
+    border: 5px solid #F7717D;
+    border-radius: 5px;
+    color: #FFFFFF;
+    width: fit-content;
+}
+
+.board .panel {
+    margin: 10px;
+    display: flex;
+}
+
+.board .panel .btn {
+    margin: auto;
+}
+
+.board .center {
+    display: flex;
+    justify-self: center;
+}
+
+.board .game {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.board .game canvas {
+    margin: 5px 0 5px 0;
+    width: 250px;
+    height: 250px;
+    background-color: #FFFFFF;
+    border: 5px solid #FFFFFF;
+    border-radius: 5px;
+}
+
+.board .game p {
+    margin: 5px 0 5px 0;
+}
+
+.board .game .state {
+    display: flex;
+    flex-direction: row;
+}
+
+.board .instructions {
+    width: 600px;
+    height: 600px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #FF4F5E;
+    border: 5px solid #FF4F5E;
+    border-radius: 5px;
+}
+
+.board .instructions .info {
+    display: flex;
+    margin: 10px 0 10px 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.board .instructions .info p {
+    margin: auto 0 auto 0;
+}
+
+.board .instructions .info .key{
+    display: block;
+    padding: 5px;
+    margin: 0 10px 0 10px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    color: white;
+    min-width: 40px;
+    width: fit-content;
+    height: 40px;
+}
+
+.preview {
+    width: 140px;
+    height: 140px;
+}
+
+.code {
+    font-family: "Lucida Console", monospace;
+    white-space: break-spaces;
+}
