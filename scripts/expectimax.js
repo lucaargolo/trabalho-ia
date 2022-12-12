@@ -74,7 +74,7 @@ function updateExpectimax() {
     }
 }
 
-const expectimaxGame = document.getElementById("game3")
+const expectimaxGame = document.getElementById("game4")
 let expectimaxEnabled = false
 
 form.addEventListener("input", () => {
@@ -95,3 +95,52 @@ form.addEventListener("input", () => {
         }
     }
 })
+
+let expectimaxMatches = 0
+let expectimaxPlayerWins = 0
+let expectimaxRobotWins = 0
+let expectimaxTies = 0
+
+canvas.addEventListener("win", () => {
+    if(expectimaxEnabled) {
+        expectimaxMatches++
+        if (player === 'X') {
+            expectimaxPlayerWins++
+        } else {
+            expectimaxRobotWins++
+        }
+        updateExpectimaxStats()
+    }
+})
+
+canvas.addEventListener("tie", () => {
+    if(expectimaxEnabled) {
+        expectimaxMatches++
+        expectimaxTies++
+        updateExpectimaxStats()
+    }
+})
+
+resetStats.addEventListener("click", () => {
+    if(expectimaxEnabled) {
+        expectimaxMatches = 0
+        expectimaxPlayerWins = 0
+        expectimaxRobotWins = 0
+        expectimaxTies = 0
+        updateExpectimaxStats()
+    }
+})
+
+function updateExpectimaxStats() {
+    if(expectimaxMatches > 0) {
+        matches.innerText = "Partidas: " + expectimaxMatches
+        playerPercentage.innerText = "Vitórias do Player: " + ((expectimaxPlayerWins / expectimaxMatches) * 100).toFixed(2) + "%"
+        robotPercentage.innerText = "Vitórias do Robô: " + ((expectimaxRobotWins / expectimaxMatches) * 100).toFixed(2) + "%"
+        tiePercentage.innerText = "Empates: " + ((expectimaxTies / expectimaxMatches) * 100).toFixed(2) + "%"
+    }else{
+        matches.innerText = "Partidas: 0"
+        playerPercentage.innerText = "Vitórias do Player: 0%"
+        robotPercentage.innerText = "Vitórias do Robô: 0%"
+        tiePercentage.innerText = "Empates: 0%"
+    }
+}

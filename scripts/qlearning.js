@@ -1,7 +1,5 @@
-const learner = new QLearner(0.8, 0.8)
-const exploration = 0.1
-
-let train = true
+const learner = new QLearner(0.2, 0.8)
+const exploration = 0.05
 async function updateQlearning() {
     if (player === 'O' && !gameOver) {
         let currentState = states.toString()
@@ -40,28 +38,14 @@ async function updateQlearning() {
         learner.add(currentState, nextState, reward, action);
 
         //make que q-learning algorithm number of iterations=10 or it could be another number
-        learner.learn(100);
+        learner.learn(1);
 
         updateGameCanvas()
         updateGameState()
-    } else if (player === 'X' && !gameOver && train === true) {
-        let emptyStates = []
-        for (let s in states) {
-            if (states[s] === '') {
-                emptyStates.push(s)
-            }
-        }
-        states[parseInt(emptyStates[Math.floor(Math.random() * emptyStates.length)])] = 'X'
-        updateGameCanvas()
-        updateGameState()
-    } else if (gameOver && train === true) {
-        qState.innerText = "Robô: "+((oWins/wins)*100).toFixed(2)+"%\nPlayer: "+((xWins/wins)*100).toFixed(2)+"%"
-        await new Promise(r => setTimeout(r, 50));
-        restart.click()
     }
 }
 
-const qlearningGame = document.getElementById("game4")
+const qlearningGame = document.getElementById("game5")
 let qlearningEnabled = false
 
 form.addEventListener("input", () => {
@@ -73,6 +57,7 @@ form.addEventListener("input", () => {
             if(player === 'O') {
                 updateQlearning()
             }
+            updateQLearningStats()
         }
     }else{
         if(qlearningEnabled) {
@@ -83,9 +68,51 @@ form.addEventListener("input", () => {
     }
 })
 
-const qState = document.getElementById("q-state")
-const qTrain = document.getElementById("train")
+let qLearningMatches = 0
+let qLearningPlayerWins = 0
+let qLearningRobotWins = 0
+let qLearningTies = 0
 
-qTrain.addEventListener("click", () => {
-    train = !train
+canvas.addEventListener("win", () => {
+    if(qlearningEnabled) {
+        qLearningMatches++
+        if (player === 'X') {
+            qLearningPlayerWins++
+        } else {
+            qLearningRobotWins++
+        }
+        updateQLearningStats()
+    }
 })
+
+canvas.addEventListener("tie", () => {
+    if(qlearningEnabled) {
+        qLearningMatches++
+        qLearningTies++
+        updateQLearningStats()
+    }
+})
+
+resetStats.addEventListener("click", () => {
+    if(qlearningEnabled) {
+        qLearningMatches = 0
+        qLearningPlayerWins = 0
+        qLearningRobotWins = 0
+        qLearningTies = 0
+        updateQLearningStats()
+    }
+})
+
+function updateQLearningStats() {
+    if(qLearningMatches > 0) {
+        matches.innerText = "Partidas: " + qLearningMatches
+        playerPercentage.innerText = "Vitórias do Player: " + ((qLearningPlayerWins / qLearningMatches) * 100).toFixed(2) + "%"
+        robotPercentage.innerText = "Vitórias do Robô: " + ((qLearningRobotWins / qLearningMatches) * 100).toFixed(2) + "%"
+        tiePercentage.innerText = "Empates: " + ((qLearningTies / qLearningMatches) * 100).toFixed(2) + "%"
+    }else{
+        matches.innerText = "Partidas: 0"
+        playerPercentage.innerText = "Vitórias do Player: 0%"
+        robotPercentage.innerText = "Vitórias do Robô: 0%"
+        tiePercentage.innerText = "Empates: 0%"
+    }
+}

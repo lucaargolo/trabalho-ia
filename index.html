@@ -33,7 +33,7 @@
                 <div class="state">
                     <p id="state"></p>
                     <div class="flex-grow-1"></div>
-                    <button id="restart" class="btn btn-danger float-end">Reiniciar</button>
+                    <button id="restart" class="btn btn-outline-light float-end">Reiniciar</button>
                 </div>
                 <p></p>
                 <form id="form">
@@ -50,6 +50,29 @@
                         </div>
                     </div>
                     <div class="mini-form">
+                        <div class="state">
+                            <div class="flex-grow-1"></div>
+                            <button type="button" id="reset-stats" class="btn btn-outline-light">Resetar Estatísticas</button>
+                            <div class="flex-grow-1"></div>
+                        </div>
+                        <p id="matches">Partidas: 0</p>
+                        <p id="player-percentage">Vitórias do Player: 0%</p>
+                        <p id="robot-percentage">Vitórias do Robô: 0%</p>
+                        <p id="tie-percentage">Empates: 0%</p>
+                        <div class="state">
+                            <label for="episodes" class="form-check-label">Episodios</label>
+                            <input type="range" class="form-range align-text-top w-auto" value="-100" min="-100" max="100000" step="100" style="margin: 0 10px 0 10px" id="episodes">
+                            <a id="episodesDisplay">∞</a>
+                        </div>
+                        <div class="state">
+                            <div class="flex-grow-1"></div>
+                            <button type="button" id="training-state" class="btn btn-outline-light">Iniciar Treino</button>
+                            <div class="flex-grow-1"></div>
+                        </div>
+
+
+                    </div>
+                    <div class="mini-form">
                         <div class="form-group">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="game" id="game1" value="game1" checked>
@@ -57,24 +80,23 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="game" id="game2" value="game2">
-                                <label class="form-check-label" for="game2">Jogo Contra Minimax</label>
+                                <label class="form-check-label" for="game2">Jogo Contra Aleatório</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="game" id="game3" value="game2">
-                                <label class="form-check-label" for="game3">Jogo Contra Expectimax</label>
+                                <input class="form-check-input" type="radio" name="game" id="game3" value="game3">
+                                <label class="form-check-label" for="game3">Jogo Contra Minimax</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="game" id="game4" value="game3">
-                                <label class="form-check-label" for="game4">Jogo Contra Q-learning</label>
+                                <input class="form-check-input" type="radio" name="game" id="game4" value="game4">
+                                <label class="form-check-label" for="game4">Jogo Contra Expectimax</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="game" id="game5" value="game5">
+                                <label class="form-check-label" for="game5">Jogo Contra Q-learning</label>
                             </div>
                         </div>
                     </div>
                 </form>
-                <div class="state">
-                    <p id="q-state">Desconhecido</p>
-                    <div class="flex-grow-1"></div>
-                    <button id="train" class="btn btn-danger float-end">Train</button>
-                </div>
             </div>
         </div>
         <div class="panel">
@@ -92,6 +114,7 @@
 </body>
 
 <script src="scripts/game.js"></script>
+<script src="scripts/random.js"></script>
 <script src="scripts/minimax.js"></script>
 <script src="scripts/expectimax.js"></script>
 <script src="scripts/lib/seedrandom.js"></script>

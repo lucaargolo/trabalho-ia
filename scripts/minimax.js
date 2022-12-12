@@ -72,7 +72,7 @@ function updateMinimax() {
     }
 }
 
-const minimaxGame = document.getElementById("game2")
+const minimaxGame = document.getElementById("game3")
 let minimaxEnabled = false
 
 form.addEventListener("input", () => {
@@ -84,6 +84,7 @@ form.addEventListener("input", () => {
             if(player === 'O') {
                 updateMinimax()
             }
+            updateMinimaxStats()
         }
     }else{
         if(minimaxEnabled) {
@@ -93,3 +94,52 @@ form.addEventListener("input", () => {
         }
     }
 })
+
+let minimaxMatches = 0
+let minimaxPlayerWins = 0
+let minimaxRobotWins = 0
+let minimaxTies = 0
+
+canvas.addEventListener("win", () => {
+    if(minimaxEnabled) {
+        minimaxMatches++
+        if (player === 'X') {
+            minimaxPlayerWins++
+        } else {
+            minimaxRobotWins++
+        }
+        updateMinimaxStats()
+    }
+})
+
+canvas.addEventListener("tie", () => {
+    if(minimaxEnabled) {
+        minimaxMatches++
+        minimaxTies++
+        updateMinimaxStats()
+    }
+})
+
+resetStats.addEventListener("click", () => {
+    if(minimaxEnabled) {
+        minimaxMatches = 0
+        minimaxPlayerWins = 0
+        minimaxRobotWins = 0
+        minimaxTies = 0
+        updateMinimaxStats()
+    }
+})
+
+function updateMinimaxStats() {
+    if(minimaxMatches > 0) {
+        matches.innerText = "Partidas: " + minimaxMatches
+        playerPercentage.innerText = "Vitórias do Player: " + ((minimaxPlayerWins / minimaxMatches) * 100).toFixed(2) + "%"
+        robotPercentage.innerText = "Vitórias do Robô: " + ((minimaxRobotWins / minimaxMatches) * 100).toFixed(2) + "%"
+        tiePercentage.innerText = "Empates: " + ((minimaxTies / minimaxMatches) * 100).toFixed(2) + "%"
+    }else{
+        matches.innerText = "Partidas: 0"
+        playerPercentage.innerText = "Vitórias do Player: 0%"
+        robotPercentage.innerText = "Vitórias do Robô: 0%"
+        tiePercentage.innerText = "Empates: 0%"
+    }
+}

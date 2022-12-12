@@ -18,6 +18,28 @@ state.innerText = "Hora do jogador: "+starts
 let gameOver = false;
 let states = ['', '', '', '', '', '', '', '', ''];
 
+let training = false;
+const trainingState = document.getElementById("training-state")
+const episodes = document.getElementById("episodes")
+const episodesDisplay = document.getElementById("episodesDisplay")
+let realEpisodes = 0
+
+const matches = document.getElementById("matches")
+const playerPercentage = document.getElementById("player-percentage")
+const robotPercentage = document.getElementById("robot-percentage")
+const tiePercentage = document.getElementById("tie-percentage")
+const resetStats = document.getElementById("reset-stats")
+trainingState.addEventListener("click", function(e) {
+  training = !training
+  if(training) {
+      canvas.dispatchEvent(new Event("update_game_state"))
+      trainingState.innerText = "Parar Treino"
+  }else{
+      trainingState.innerText = "Iniciar Treino"
+  }
+})
+
+
 const winStates = [
     ['E', 'E', 'E', 'R', 'R', 'R', 'R', 'R', 'R'],
     ['R', 'R', 'R', 'E', 'E', 'E', 'R', 'R', 'R'],
@@ -111,23 +133,15 @@ function checkWinState(player) {
     return win;
 }
 
-let wins = 0
-let xWins = 0
-let oWins = 0
-
 function updateGameState() {
     let win = checkWinState(player)
     if(win || !states.includes('')) {
         gameOver = true
         if(win) {
-            wins++
-            if(player === 'X') {
-                xWins++
-            }else{
-                oWins++
-            }
+            canvas.dispatchEvent(new Event("win"))
             state.innerText = "Jogador "+player+" ganhou!"
         }else{
+            canvas.dispatchEvent(new Event("tie"))
             state.innerText = "Empate!"
         }
     }
@@ -167,7 +181,43 @@ function drawVictory(winState) {
 
 updateGameCanvas()
 canvas.dispatchEvent(new Event("update_game_state"))
+
+canvas.addEventListener("update_game_state", async () => {
+    if (training) {
+        if (gameOver) {
+            if (realEpisodes > 0) {
+                realEpisodes--
+                episodes.value = Math.ceil(realEpisodes/100)*100
+                episodesDisplay.innerText = realEpisodes
+                if(realEpisodes === 0) {
+                    episodes.value = -100
+                    training = false
+                    trainingState.innerText = "Iniciar Treino"
+                    episodesDisplay.innerText = "∞"
+                }
+            }
+            await new Promise(r => setTimeout(r, 25));
+            restart.click()
+        } else if (player === 'X' && episodes.value !== "0") {
+            let emptyStates = []
+            for (let s in states) {
+                if (states[s] === '') {
+                    emptyStates.push(s)
+                }
+            }
+            states[parseInt(emptyStates[Math.floor(Math.random() * emptyStates.length)])] = 'X'
+            updateGameCanvas()
+            updateGameState()
+        }
+    }
+})
 form.addEventListener("input", () => {
+    realEpisodes = parseInt(episodes.value)
+    if(realEpisodes > 0) {
+        episodesDisplay.innerText = realEpisodes
+    }else{
+        episodesDisplay.innerText = "∞"
+    }
     if(robotStarts.checked && starts !== 'O') {
         starts = 'O'
         console.log("[Game] Mudando jogador inicial para robô")
