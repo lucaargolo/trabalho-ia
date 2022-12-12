@@ -111,11 +111,21 @@ function checkWinState(player) {
     return win;
 }
 
+let wins = 0
+let xWins = 0
+let oWins = 0
+
 function updateGameState() {
     let win = checkWinState(player)
     if(win || !states.includes('')) {
         gameOver = true
         if(win) {
+            wins++
+            if(player === 'X') {
+                xWins++
+            }else{
+                oWins++
+            }
             state.innerText = "Jogador "+player+" ganhou!"
         }else{
             state.innerText = "Empate!"

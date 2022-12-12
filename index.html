@@ -61,15 +61,20 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="game" id="game3" value="game2">
-                                <label class="form-check-label" for="game2">Jogo Contra Expectimax</label>
+                                <label class="form-check-label" for="game3">Jogo Contra Expectimax</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="game" id="game4" value="game3">
-                                <label class="form-check-label" for="game3">Jogo Contra Q-learning</label>
+                                <label class="form-check-label" for="game4">Jogo Contra Q-learning</label>
                             </div>
                         </div>
                     </div>
                 </form>
+                <div class="state">
+                    <p id="q-state">Desconhecido</p>
+                    <div class="flex-grow-1"></div>
+                    <button id="train" class="btn btn-danger float-end">Train</button>
+                </div>
             </div>
         </div>
         <div class="panel">
@@ -89,5 +94,8 @@
 <script src="scripts/game.js"></script>
 <script src="scripts/minimax.js"></script>
 <script src="scripts/expectimax.js"></script>
+<script src="scripts/lib/seedrandom.js"></script>
+<script src="scripts/lib/q-learning.js"></script>
+<script src="scripts/qlearning.js"></script>
 
 </html>
