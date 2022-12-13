@@ -24,21 +24,20 @@ function updateQlearning() {
         states[action] = 'O'
 
         let reward
-        let robotWin = checkWinState('O')
-        let playerWin = checkWinState('X')
-        if (robotWin === false && playerWin === false) {
-            reward = 0;
-        } else if (robotWin === true) {
-            reward = 10;
-        } else {
-            reward = -10;
+        let win = checkWinState(true)
+        if(win === 'O') {
+            reward = 10
+        }else if(win === 'X') {
+            reward = -10
+        }else{
+            reward = 0
         }
 
         const nextState = states.toString()
         learner.add(currentState, nextState, reward, action);
 
         //make que q-learning algorithm number of iterations=10 or it could be another number
-        learner.learn(1);
+        learner.learn(10);
 
         updateGameCanvas()
         updateGameState()

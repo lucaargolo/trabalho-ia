@@ -1,12 +1,11 @@
 function evaluateExpectimax() {
-    let robotWin = checkWinState('O')
-    let playerWin = checkWinState('X')
-    if(robotWin === false && playerWin === false) {
-        return 0;
-    }else if(robotWin === true) {
+    let win = checkWinState(true)
+    if(win === 'O') {
         return 10;
-    }else {
-        return -10;
+    }else if(win === 'X') {
+        return -10
+    }else{
+        return 0
     }
 }
 
@@ -86,6 +85,7 @@ form.addEventListener("input", () => {
             if(player === 'O') {
                 updateExpectimax()
             }
+            updateExpectimaxStats()
         }
     }else{
         if(expectimaxEnabled) {

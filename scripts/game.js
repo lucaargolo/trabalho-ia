@@ -13,7 +13,11 @@ ctx.textAlign = "center";
 
 let starts = 'X'
 let player = starts;
-state.innerText = "Hora do jogador: "+starts
+if(starts === 'X') {
+    state.innerText = "Hora do jogador: X"
+}else{
+    state.innerText = "Hora do robô: O"
+}
 
 let gameOver = false;
 let states = ['', '', '', '', '', '', '', '', ''];
@@ -39,22 +43,14 @@ trainingState.addEventListener("click", function(e) {
   }
 })
 
-
-const winStates = [
-    ['E', 'E', 'E', 'R', 'R', 'R', 'R', 'R', 'R'],
-    ['R', 'R', 'R', 'E', 'E', 'E', 'R', 'R', 'R'],
-    ['R', 'R', 'R', 'R', 'R', 'R', 'E', 'E', 'E'],
-    ['E', 'R', 'R', 'E', 'R', 'R', 'E', 'R', 'R'],
-    ['R', 'E', 'R', 'R', 'E', 'R', 'R', 'E', 'R'],
-    ['R', 'R', 'E', 'R', 'R', 'E', 'R', 'R', 'E'],
-    ['E', 'R', 'R', 'R', 'E', 'R', 'R', 'R', 'E'],
-    ['R', 'R', 'E', 'R', 'E', 'R', 'E', 'R', 'R'],
-]
-
 restart.addEventListener("click", function(e) {
     console.log("[Game] Reiniciando jogo!")
     player = starts;
-    state.innerText = "Hora do jogador: "+starts
+    if(player === 'X') {
+        state.innerText = "Hora do jogador: X"
+    }else{
+        state.innerText = "Hora do robô: O"
+    }
     gameOver = false;
     states = ['', '', '', '', '', '', '', '', ''];
     updateGameCanvas()
@@ -114,30 +110,64 @@ function updateGameCanvas() {
     })
 }
 
-function checkWinState(player) {
-    let win = false;
-    winStates.forEach((winState) => {
-        let lastIndex = 0
-        for(let index in winState) {
-            let checkChar = winState[index]
-            if (!((checkChar === 'R') || (checkChar === 'E' && player === states[index]))) {
-                break;
+function checkWinState(test) {
+
+    for(let row = 0; row < 3; row++) {
+        if (states[row * 3] !== '' && states[row * 3] === states[(row * 3) + 1] && states[(row * 3) + 1] === states[(row * 3) + 2]) {
+            if(test === false) {
+                let winState = ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R']
+                winState[row * 3] = 'E'
+                winState[(row * 3) + 1] = 'E'
+                winState[(row * 3) + 2] = 'E'
+                drawVictory(winState)
             }
-            lastIndex = parseInt(index)
+            return states[row * 3]
         }
-        if(lastIndex === 8 && win === false) {
+    }
+
+    for(let col = 0; col < 3; col++) {
+        if (states[col] !== '' && states[col] === states[3 + col] && states[3 + col] === states[6 + col]) {
+            if(test === false) {
+                let winState = ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R']
+                winState[col] = 'E'
+                winState[3 + col] = 'E'
+                winState[6 + col] = 'E'
+                drawVictory(winState)
+            }
+            return states[col]
+        }
+    }
+
+    if (states[0] !== '' && states[0] === states[4] && states[4] === states[8]) {
+        if(test === false && states[0] !== '') {
+            let winState = ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R']
+            winState[0] = 'E'
+            winState[4] = 'E'
+            winState[8] = 'E'
             drawVictory(winState)
-            win = true
         }
-    })
-    return win;
+        return states[0]
+    }
+
+    if (states[2] !== '' && states[2] === states[4] && states[4] === states[6]) {
+        if(test === false && states[2] !== '') {
+            let winState = ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R']
+            winState[2] = 'E'
+            winState[4] = 'E'
+            winState[6] = 'E'
+            drawVictory(winState)
+        }
+        return states[2]
+    }
+
+    return '';
 }
 
 function updateGameState() {
-    let win = checkWinState(player)
-    if(win || !states.includes('')) {
+    let win = checkWinState(false)
+    if(win !== '' || !states.includes('')) {
         gameOver = true
-        if(win) {
+        if(win !== '') {
             canvas.dispatchEvent(new Event("win"))
             state.innerText = "Jogador "+player+" ganhou!"
         }else{
@@ -146,7 +176,7 @@ function updateGameState() {
         }
     }
     if (player === "X") {
-        if(!gameOver) state.innerText = "Hora do jogador: O"
+        if(!gameOver) state.innerText = "Hora do robô: O"
         player = "O";
     } else {
         if(!gameOver) state.innerText = "Hora do jogador: X"
